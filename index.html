@@ -356,7 +356,15 @@ main{width:calc(100% - 270px);margin-right:270px;padding:32px;max-width:1600px}.
 @media(max-width:900px){aside{width:82px}main{width:calc(100% - 82px);margin-right:82px}}
 @media(max-width:680px){aside{display:none}main{width:100%;margin:0;padding:0 13px 18px}.order-dashboard{display:block}#orders .mobile-page-title{display:block}#orders .order-desktop-head,#orders .order-desktop-card{display:none}.order-mobile-only{display:block}.order-name{font-size:26px}.order-amount{font-size:28px}.order-info-strip{gap:7px}.order-info-box{padding:10px 8px}.order-info-box b{font-size:15px}.toast{left:12px;right:12px;bottom:88px;min-width:0}}
 
+
+/* ===== Firebase Cloud Sync ===== */
+.firebase-auth-overlay{position:fixed;inset:0;background:rgba(5,22,28,.72);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:18px;z-index:120}
+.firebase-auth-overlay.show{display:flex}.firebase-auth-box{width:min(430px,100%);background:#fff;border-radius:25px;padding:24px;box-shadow:0 28px 90px rgba(0,0,0,.25)}
+.firebase-auth-box h2{margin:0 0 7px}.firebase-auth-box p{margin:0 0 18px;color:var(--muted);font-size:12px;line-height:1.8}
+.firebase-auth-box .field{margin-bottom:11px}.firebase-auth-status{margin-top:11px;padding:10px 12px;border-radius:12px;font-size:11px;background:#f5f7f8;color:var(--muted)}
+.cloud-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:20px;background:#e8f7f2;color:#087a54;font-size:10px;font-weight:800;margin-inline-start:7px}.cloud-badge.off{background:#fff3df;color:#9a650d}.cloud-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
 </style>
+<script src="firebase-config.js"></script>
 </head>
 <body>
 <div class="app">
@@ -381,7 +389,7 @@ main{width:calc(100% - 270px);margin-right:270px;padding:32px;max-width:1600px}.
 </div>
 
 <section id="dashboard" class="page"><div class="mobile-page-title"><h1>لوحة التحكم</h1><p>ملخص الجمعية وحالة التحصيل</p></div>
- <div class="top"><div><h1>لوحة التحكم</h1><p id="todayText"></p></div><button class="btn" onclick="openMember()">+ إضافة عضو</button></div>
+ <div class="top"><div><h1>لوحة التحكم <span id="cloudBadge" class="cloud-badge off"><span class="cloud-dot"></span>جارٍ الاتصال...</span></h1><p id="todayText"></p></div><button class="btn" onclick="openMember()">+ إضافة عضو</button></div>
  <div class="card hero-card" id="heroCard">
    <div class="hero-content">
     <div class="hero-kicker">جمعيتك تحت السيطرة</div>
@@ -509,7 +517,7 @@ main{width:calc(100% - 270px);margin-right:270px;padding:32px;max-width:1600px}.
    </div>
    <div class="duration-result"><span>مدة الجمعية المحسوبة</span><b id="durationPreview">—</b></div>
    <input id="monthsCount" type="hidden" value="12">
-   <button class="btn" onclick="saveSettings()">حفظ إعدادات الجمعية</button>
+   <button class="btn" onclick="saveSettings()">حفظ إعدادات الجمعية</button> <button class="btn secondary" onclick="firebaseLogout()">تسجيل خروج Firebase</button>
  <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
  <button class="btn secondary" onclick="exportData()">⬇️ تصدير نسخة احتياطية</button>
  <button class="btn secondary" onclick="importData()">⬆️ استيراد نسخة احتياطية</button>
@@ -535,21 +543,39 @@ main{width:calc(100% - 270px);margin-right:270px;padding:32px;max-width:1600px}.
   <div class="field"><label>اسم العضو *</label><input id="mName" placeholder="مثال: أحمد محمد"></div>
   <div class="field"><label>المبلغ الشهري *</label><input id="mAmount" type="number" min="0" placeholder="1000"></div>
   <div class="field"><label>رقم الهاتف</label><input id="mPhone" placeholder="01xxxxxxxxx"></div>
-  <div class="field"><label>دور الاستلام</label><input id="mOrder" type="number" min="1" placeholder="1"></div>
+  <div class="field"><label>دور الاستلام <span class="muted">(تلقائي للعضو الجديد)</span></label><input id="mOrder" type="number" min="1" placeholder="يُحدد تلقائيًا"></div>
   <div class="field"><label>تاريخ البداية</label><input id="mStart" type="date"></div>
  </div>
  <div class="form-actions"><button class="btn" onclick="saveMember()"><span class="btn-label">حفظ العضو</span></button><button class="btn secondary" onclick="closeModal()">إلغاء</button></div>
 </div></div>
 <div class="confirm-overlay" id="confirmOverlay"><div class="confirm-box"><div class="confirm-icon">!</div><h3 id="confirmTitle">تأكيد العملية</h3><p id="confirmMessage"></p><div class="confirm-actions"><button class="btn red" id="confirmOk">تأكيد</button><button class="btn secondary" id="confirmCancel">إلغاء</button></div></div></div><div class="toast" id="toast"></div>
+<div class="firebase-auth-overlay" id="firebaseAuthOverlay">
+  <div class="firebase-auth-box">
+    <div class="settings-card-title"><div class="settings-icon">☁️</div><div><h2 style="margin:0">دخول إدارة الجمعية</h2><small class="muted">الاتصال السحابي مؤمّن عبر Firebase</small></div></div>
+    <p>استخدم بريد وكلمة مرور حساب الإدارة الذي أنشأته في Firebase Authentication. الأعضاء لا يحتاجون لتسجيل الدخول في صفحة المشاهدة.</p>
+    <div class="field"><label>البريد الإلكتروني</label><input id="firebaseEmail" type="email" autocomplete="username" placeholder="admin@example.com"></div>
+    <div class="field"><label>كلمة المرور</label><input id="firebasePassword" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+    <button class="btn" id="firebaseLoginBtn" style="width:100%">دخول وربط الجمعية</button>
+    <div class="firebase-auth-status" id="firebaseAuthStatus">يتم تجهيز الاتصال...</div>
+  </div>
+</div>
 
 <script>
 const KEY='jam3ety_v2';
 const DB_NAME='Jam3etyDatabase';
 const DB_STORE='app';
 const DB_KEY='mainData';
+const CLOUD_PATH='jam3ety';
 const EMPTY_DATA={settings:{name:'جمعيتي',months:12,startMonth:'',endMonth:''},members:[],payments:{},receipts:{}};
 let data=loadLocalData()||structuredClone(EMPTY_DATA);
 let storageReady=false;
+let firebaseReady=false;
+let firebaseAuthReady=false;
+let cloudRef=null;
+let cloudListening=false;
+let applyingCloud=false;
+let cloudBootstrapped=false;
+let firebaseAppInstance=null;
 function normalizeData(x){
   x=x&&typeof x==='object'?x:{};
   if(!x.settings)x.settings={...EMPTY_DATA.settings};
@@ -557,6 +583,10 @@ function normalizeData(x){
   if(!Array.isArray(x.members))x.members=[];
   if(!x.payments||typeof x.payments!=='object')x.payments={};
   if(!x.receipts||typeof x.receipts!=='object')x.receipts={};
+  // Automatic, stable turn numbering: 1..N.
+  x.members=x.members.map((m,i)=>({...m,order:Number(m.order)||i+1}));
+  x.members.sort((a,b)=>(Number(a.order)||999999)-(Number(b.order)||999999));
+  x.members.forEach((m,i)=>m.order=i+1);
   return x;
 }
 function loadLocalData(){
@@ -581,71 +611,93 @@ async function writeBackup(payload){
   try{const db=await openJamDB();await new Promise((resolve,reject)=>{const r=db.transaction(DB_STORE,'readwrite').objectStore(DB_STORE).put(payload,DB_KEY);r.onsuccess=resolve;r.onerror=()=>reject(r.error)});return true}catch(e){return false}
 }
 function writeLocal(payload){try{localStorage.setItem(KEY,JSON.stringify(payload));return true}catch(e){return false}}
+function firebaseConfigValid(){
+  const c=window.JAM3ETY_FIREBASE_CONFIG;
+  return !!(c&&c.apiKey&&c.authDomain&&c.databaseURL&&c.projectId&&!String(c.apiKey).startsWith('PUT_'));
+}
+function loadScript(src){return new Promise((resolve,reject)=>{if(document.querySelector(`script[src="${src}"]`))return resolve();let s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error('تعذر تحميل Firebase'));document.head.appendChild(s)})}
+function setCloudBadge(connected,text='متصل بالسحابة'){
+  let el=$('cloudBadge');if(!el)return;
+  el.className='cloud-badge'+(connected?'':' off');el.innerHTML=`<span class="cloud-dot"></span>${text}`;
+}
+function showFirebaseLogin(show=true,msg='يرجى تسجيل الدخول بحساب الإدارة'){$('firebaseAuthOverlay')?.classList.toggle('show',show);if($('firebaseAuthStatus'))$('firebaseAuthStatus').textContent=msg;}
+async function initFirebase(){
+  if(!firebaseConfigValid()){setCloudBadge(false,'Firebase غير مفعّل');return false;}
+  try{
+    await loadScript('https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js');
+    await loadScript('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js');
+    await loadScript('https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js');
+    firebaseAppInstance=firebase.initializeApp(window.JAM3ETY_FIREBASE_CONFIG);
+    firebaseReady=true;
+    cloudRef=firebase.database().ref(CLOUD_PATH);
+    firebase.auth().onAuthStateChanged(async user=>{
+      firebaseAuthReady=!!user;
+      if(!user){setCloudBadge(false,'يلزم دخول الإدارة');showFirebaseLogin(true,'سجّل الدخول بحساب الإدارة للاتصال بالسحابة');return;}
+      showFirebaseLogin(false);setCloudBadge(true,'متصل بالسحابة');
+      await startCloudSync();
+    });
+    $('firebaseLoginBtn')?.addEventListener('click',firebaseLogin);
+    $('firebasePassword')?.addEventListener('keydown',e=>{if(e.key==='Enter')firebaseLogin()});
+    return true;
+  }catch(e){console.error(e);setCloudBadge(false,'تعذر الاتصال بـ Firebase');toast('تعذر تحميل Firebase — سيستمر الحفظ محليًا','error');return false;}
+}
+function firebaseLogout(){if(window.firebase&&firebase.auth)firebase.auth().signOut();}
+async function firebaseLogin(){
+  const email=$('firebaseEmail')?.value.trim(),password=$('firebasePassword')?.value||'';
+  if(!email||!password)return $('firebaseAuthStatus').textContent='اكتب البريد الإلكتروني وكلمة المرور';
+  const btn=$('firebaseLoginBtn');setBusy(btn,true,'جارٍ تسجيل الدخول...');
+  try{await firebase.auth().signInWithEmailAndPassword(email,password);$('firebaseAuthStatus').textContent='تم تسجيل الدخول ✓';}
+  catch(e){$('firebaseAuthStatus').textContent='بيانات الدخول غير صحيحة أو الحساب غير مفعّل في Firebase.';toast('تعذر تسجيل الدخول إلى Firebase','error');}
+  finally{setBusy(btn,false)}
+}
+async function startCloudSync(){
+  if(!cloudRef||cloudListening)return;
+  cloudListening=true;
+  cloudRef.on('value',async snap=>{
+    const cloud=snap.val();
+    if(cloud && typeof cloud==='object'){
+      applyingCloud=true;
+      data=normalizeData(cloud);
+      writeLocal(data);await writeBackup(data);
+      applyingCloud=false;cloudBootstrapped=true;storageReady=true;renderAll();
+    }else if(!cloudBootstrapped){
+      cloudBootstrapped=true;
+      await pushCloud(data);
+    }
+  },err=>{console.error(err);setCloudBadge(false,'خطأ في المزامنة');toast('تعذر قراءة بيانات Firebase','error')});
+}
+async function pushCloud(payload){
+  if(!firebaseReady||!firebaseAuthReady||!cloudRef||applyingCloud)return false;
+  try{await cloudRef.set(normalizeData(JSON.parse(JSON.stringify(payload))));setCloudBadge(true,'تم الحفظ على السحابة ✓');return true}
+  catch(e){console.error(e);setCloudBadge(false,'فشل الحفظ السحابي');toast('تم الحفظ على الجهاز، لكن فشل رفعه إلى Firebase','error');return false}
+}
 async function saveData(){
   const snapshot=normalizeData(JSON.parse(JSON.stringify(data)));
-  const localOK=writeLocal(snapshot);
-  const dbOK=await writeBackup(snapshot);
+  const localOK=writeLocal(snapshot);const dbOK=await writeBackup(snapshot);
+  data=snapshot;
+  if(firebaseReady&&firebaseAuthReady&&!applyingCloud)await pushCloud(snapshot);
   if(!localOK&&!dbOK)throw new Error('تعذر حفظ البيانات');
-  storageReady=true;
-  if(typeof renderAll==='function')renderAll();
-  return true;
+  storageReady=true;if(typeof renderAll==='function')renderAll();return true;
 }
 function save(){
-  // Compatibility wrapper: all writes are persisted immediately and UI is refreshed.
-  writeLocal(data);
-  writeBackup(data);
-  if(document.readyState!=='loading' && typeof renderAll==='function') renderAll();
+  try{
+    const snapshot=normalizeData(JSON.parse(JSON.stringify(data)));
+    data=snapshot;writeLocal(snapshot);writeBackup(snapshot).catch(()=>{});
+    if(firebaseReady&&firebaseAuthReady&&!applyingCloud)pushCloud(snapshot);
+  }catch(e){console.error('save error',e);toast('تعذر حفظ التغيير على هذا الجهاز','error');return false}
+  if(document.readyState!=='loading'&&typeof renderAll==='function')renderAll();return true;
 }
 async function initializeStorage(){
-  const backup=await readBackup();
-  if(backup && backup.members.length>=data.members.length){data=backup;}
-  // migrate old v1 data to the new persistent key
-  writeLocal(data);
-  await writeBackup(data);
-  storageReady=true;
-  renderAll();
+  const backup=await readBackup();if(backup&&backup.members.length>=data.members.length)data=backup;
+  data=normalizeData(data);writeLocal(data);await writeBackup(data);storageReady=true;renderAll();
+  await initFirebase();
 }
-if(!data.settings.startMonth){
-  let base=new Date();
-  data.settings.startMonth=base.toISOString().slice(0,7);
-}
-if(!data.settings.endMonth){
-  let d=new Date(data.settings.startMonth+'-01T00:00:00');
-  d.setMonth(d.getMonth()+(Math.max(1,Number(data.settings.months)||12)-1));
-  data.settings.endMonth=d.toISOString().slice(0,7);
-}
+if(!data.settings.startMonth){let base=new Date();data.settings.startMonth=base.toISOString().slice(0,7)}
+if(!data.settings.endMonth){let d=new Date(data.settings.startMonth+'-01T00:00:00');d.setMonth(d.getMonth()+(Math.max(1,Number(data.settings.months)||12)-1));data.settings.endMonth=d.toISOString().slice(0,7)}
 
 const $=id=>document.getElementById(id);
 const money=n=>new Intl.NumberFormat('ar-EG').format(Number(n||0))+' ج';
-function save(){
-  // حفظ فوري: localStorage الآن، وIndexedDB في الخلفية، ثم تحديث الواجهة فورًا.
-  try{
-    const snapshot=normalizeData(JSON.parse(JSON.stringify(data)));
-    localStorage.setItem(KEY,JSON.stringify(snapshot));
-    data=snapshot;
-    writeBackup(snapshot).catch(()=>{});
-  }catch(e){
-    console.error('save error',e);
-    toast('تعذر حفظ التغيير على هذا الجهاز','error');
-    return false;
-  }
-  if(document.readyState!=='loading' && typeof renderAll==='function') renderAll();
-  return true;
-}
-// مزامنة فورية إذا كان المشروع مفتوحًا في أكثر من تبويب/نافذة
-window.addEventListener('storage',e=>{
-  if(e.key!==KEY || !e.newValue)return;
-  try{
-    const incoming=JSON.parse(e.newValue);
-    if(!incoming || !Array.isArray(incoming.members))return;
-    data=incoming;
-    if(!data.settings)data.settings={name:'جمعيتي',months:12};
-    if(!data.payments)data.payments={};
-    if(!data.receipts)data.receipts={};
-    renderAll();
-    toast('تم تحديث البيانات تلقائيًا ✓','info');
-  }catch(err){}
-});
+window.addEventListener('storage',e=>{if(e.key!==KEY||!e.newValue)return;try{let incoming=JSON.parse(e.newValue);if(!incoming||!Array.isArray(incoming.members))return;data=normalizeData(incoming);renderAll();toast('تم تحديث البيانات تلقائيًا ✓','info')}catch(err){}});
 function monthKey(){return $('dashMonth')?.value || new Date().toISOString().slice(0,7)}
 function monthLabel(k){let [y,m]=k.split('-');return new Intl.DateTimeFormat('ar-EG',{month:'long',year:'numeric'}).format(new Date(y,m-1,1))}
 function monthsBetween(a,b){
@@ -702,23 +754,16 @@ async function saveMember(){
   if(!name||!Number.isFinite(amount)||amount<0)return toast('اكتب اسم العضو والمبلغ بشكل صحيح','error');
   let duplicate=data.members.find(x=>String(x.name||'').trim().toLowerCase()===name.toLowerCase()&&x.id!==id);
   if(duplicate){$('mName').classList.add('shake');setTimeout(()=>$('mName').classList.remove('shake'),400);return toast(`العضو ${name} مضاف بالفعل — لم يتم تكراره`,'error')}
-  let btn=document.querySelector('#memberModal .form-actions .btn:not(.secondary)');
-  setBusy(btn,true,'جارٍ الحفظ...');
-  const obj={id:id||('m_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)),name,amount,phone:$('mPhone').value.trim(),order:Number($('mOrder').value)||null,start:$('mStart').value};
+  let btn=document.querySelector('#memberModal .form-actions .btn:not(.secondary)');setBusy(btn,true,'جارٍ الحفظ...');
   const old=data;
+  const existing=data.members.find(x=>x.id===id);
+  const requestedOrder=Number($('mOrder').value)||0;
+  const autoOrder=existing?Number(existing.order)||1:(Math.max(0,...data.members.map(x=>Number(x.order)||0))+1);
+  const obj={id:id||('m_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)),name,amount,phone:$('mPhone').value.trim(),order:existing?(requestedOrder||autoOrder):autoOrder,start:$('mStart').value};
   if(id)data.members=data.members.map(x=>x.id===id?obj:x);else data.members.push(obj);
-  try{
-    await saveData();
-    closeModal();
-    setBusy(btn,false);
-    toast(id?`تم تعديل ${name} بنجاح ✓`:`تمت إضافة ${name} بنجاح ✓`);
-    haptic();
-  }catch(err){
-    data=old;
-    setBusy(btn,false);
-    renderAll();
-    toast('تعذر حفظ العضو. البيانات لم تُفقد، حاول مرة أخرى.','error');
-  }
+  data=normalizeData(data);
+  try{await saveData();closeModal();setBusy(btn,false);toast(id?`تم تعديل ${name} بنجاح ✓`:`تمت إضافة ${name} — الدور ${obj.order} ✓`);haptic();}
+  catch(err){data=old;setBusy(btn,false);renderAll();toast('تعذر حفظ العضو. البيانات لم تُفقد، حاول مرة أخرى.','error')}
 }
 async function delMember(id){let m=data.members.find(x=>x.id===id);if(!m)return;if(!(await confirmAction('حذف العضو؟',`سيتم حذف ${m.name} وسجل دفعاته من هذا الجهاز. لا يمكن التراجع عن العملية.`,'حذف العضو',true)))return;data.members=data.members.filter(x=>x.id!==id);Object.keys(data.payments).forEach(k=>delete data.payments[k][id]);Object.keys(data.receipts).forEach(k=>{if(data.receipts[k]===id)delete data.receipts[k]});await saveData();toast(`تم حذف ${m.name}`)}
 function getPay(m,k){return data.payments[k]?.[m.id]||{amount:0,date:''}}
@@ -745,7 +790,19 @@ async function pay(id,k){let m=data.members.find(x=>x.id===id);if(!m)return;let 
 function editPayment(id,k){pay(id,k)}
 async function clearPayment(id,k){let m=data.members.find(x=>x.id===id);if(!m)return;if(!(await confirmAction('إلغاء تسجيل الدفع؟',`سيتم مسح دفعة ${m.name} لشهر ${monthLabel(k)}.`,'مسح الدفع',true)))return;if(data.payments[k])delete data.payments[k][id];save();toast(`تم مسح دفع ${m.name}`,'info')}
 async function markAllPaid(){let k=$('payMonth').value;if(!data.members.length)return toast('لا يوجد أعضاء','error');if(!(await confirmAction('تسجيل دفع الجميع؟',`سيتم تسجيل المبلغ الكامل لـ ${data.members.length} عضو في ${monthLabel(k)}.`,'تسجيل الجميع',false)))return;data.members.forEach(m=>{if(status(m,k)!=='paid')setPay(m,k,m.amount)});toast(`تم تسجيل دفع الجميع لشهر ${monthLabel(k)} ✓`)}
-function renderOrders(){let ms=[...data.members].sort((a,b)=>(a.order||999)-(b.order||999));$('ordersBody').innerHTML=ms.length?ms.map(m=>`<tr><td><b>${m.order||'-'}</b></td><td>${m.name}</td><td>${money(data.members.reduce((s,x)=>s+x.amount,0))}</td><td><span class="status ${m.order?'paid':'unpaid'}">${m.order?'محدد':'غير محدد'}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty">أضف أعضاء وحدد أدوارهم.</td></tr>'}
+function renderOrders(){
+  let ordered=[...data.members].sort((a,b)=>(Number(a.order)||999999)-(Number(b.order)||999999));
+  let first=ordered[0], idx=ordered.findIndex(x=>data.receipts[monthKey()]===x.id);
+  let currentIndex=Math.max(0,idx<0?0:idx+1), current=ordered[currentIndex], next=ordered[currentIndex+1];
+  let receivedCount=Object.keys(data.receipts||{}).length;
+  if($('ordersBody')) $('ordersBody').innerHTML=ordered.length?ordered.map((m,i)=>{
+    let isCurrent=current?.id===m.id;
+    return `<tr><td><b>${i+1}</b></td><td><b>${m.name}</b>${isCurrent?' <span class="status partial">الدور الحالي</span>':''}</td><td>${money(m.amount)}</td><td><span class="status ${isCurrent?'partial':'paid'}">${isCurrent?'يقبض الآن':i<currentIndex?'تم الدور':'في الانتظار'}</span></td></tr>`;
+  }).join(''):'<tr><td colspan="4" class="empty">أضف أعضاء الجمعية وسيتم ترتيب أدوارهم تلقائيًا.</td></tr>';
+  if($('orderAdminSummary')) $('orderAdminSummary').innerHTML=`<div class="pill">عدد الأعضاء: ${ordered.length}</div><div class="pill">تم تنفيذ: ${Math.min(currentIndex,ordered.length)} دور</div><div class="pill">المتبقي: ${Math.max(0,ordered.length-currentIndex)} دور</div>`;
+  if($('orderAdminCurrent')) $('orderAdminCurrent').textContent=current?`الدور الحالي: ${current.name} — رقم ${currentIndex+1}`:'تم إكمال جميع الأدوار ✓';
+  if($('orderAdminNext')) $('orderAdminNext').textContent=next?`الدور القادم: ${next.name} — رقم ${currentIndex+2}`:'لا يوجد دور تالٍ';
+}
 function renderReports(){let k=$('reportMonth').value;$('reportsBody').innerHTML=data.members.map(m=>{let p=getPay(m,k),r=Math.min(100,p.amount/m.amount*100||0);return `<tr><td><b>${m.name}</b></td><td>${money(m.amount)}</td><td>${money(p.amount)}</td><td>${money(Math.max(0,m.amount-p.amount))}</td><td>${r.toFixed(0)}%</td></tr>`}).join('')||'<tr><td colspan="5" class="empty">لا توجد بيانات.</td></tr>'}
 function updateDurationPreview(){
   let a=$('startMonth')?.value,b=$('endMonth')?.value;
@@ -855,7 +912,16 @@ async function markReceived(month,id){
   haptic([15,30,15]);
 }
 
+function normalizeMemberOrders(){
+  const sorted=[...data.members].sort((a,b)=>{
+    const ao=Number(a.order)||999999, bo=Number(b.order)||999999;
+    return ao-bo || String(a.id).localeCompare(String(b.id));
+  });
+  sorted.forEach((m,i)=>m.order=i+1);
+}
+
 function renderAll(){
+  normalizeMemberOrders();
   fillMonths();
   $('groupName').value=data.settings.name;
   $('monthsCount').value=data.settings.months;
