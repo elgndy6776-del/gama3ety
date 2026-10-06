@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "jam3ety": {
+      ".read": true,
+      ".write": "auth != null"
+    }
+  }
+}
