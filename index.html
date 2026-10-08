@@ -70,6 +70,56 @@ th{color:#687187;background:#fafaff;font-size:12px}.status{display:inline-flex;p
 .toast{position:fixed;left:20px;bottom:20px;background:#191b2d;color:#fff;padding:12px 17px;border-radius:12px;z-index:50;display:none;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .toast.show{display:block}
 
+
+/* ===== Members + A4 Collection Premium Theme ===== */
+#members{position:relative}
+#members:before{content:"";display:block;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--primary2),var(--primary));margin:-2px 0 18px;box-shadow:0 3px 10px rgba(184,135,43,.18)}
+#members .top h1{color:var(--primary)}
+#members .top p{color:#806b73}
+#members .top .btn{background:linear-gradient(135deg,var(--primary),#5b1027);border:1px solid rgba(184,135,43,.5);box-shadow:0 7px 18px rgba(123,23,52,.2)}
+#members .card{border:1px solid #dfc6cd;box-shadow:0 12px 30px rgba(91,16,39,.08);overflow:hidden}
+#members .toolbar{background:linear-gradient(180deg,#fffaf9,#fff);padding:12px;border:1px solid #ead9dd;border-radius:15px}
+#members .toolbar input{border-color:#dfc6cd!important;background:#fffdfd}
+#members .toolbar input:focus{border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(123,23,52,.08)!important}
+#members .table-wrap{border:1px solid #ead9dd;border-radius:15px;overflow:hidden}
+#members table thead th{background:linear-gradient(90deg,#4b1023,#6e1630);color:#fff;border-bottom:3px solid var(--primary2);padding:14px 10px}
+#members table tbody tr{transition:.16s}
+#members table tbody tr:hover{background:#fff9f4}
+#members table tbody td{border-bottom-color:#eee1e4}
+#members table tbody td:first-child{color:var(--primary2);font-weight:bold}
+#members table .btn.secondary{border-color:#d9c0c7;color:var(--primary);background:#fff8f9}
+#members table .btn.red{background:linear-gradient(135deg,#8e1f3d,#67102a)}
+#members .mobile-page-title h1{color:var(--primary)}
+
+.collection-print{display:none}
+.collection-print .print-head{border:2px solid var(--primary);border-bottom:5px solid var(--primary2);border-radius:12px;padding:14px 18px;margin-bottom:14px;text-align:center}
+.collection-print .print-head h1{margin:0;color:var(--primary);font-size:24px}
+.collection-print .print-head .sub{margin-top:5px;color:#6e5b62;font-size:12px}
+.collection-print .print-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.collection-print .meta-box{border:1px solid #d9c7cc;border-radius:8px;padding:8px 10px;font-size:12px}
+.collection-print .meta-box b{color:var(--primary)}
+.collection-print table{border:1.5px solid var(--primary);border-collapse:collapse}
+.collection-print th,.collection-print td{border:1px solid #cdbbc1;padding:8px 7px;font-size:12px;height:31px}
+.collection-print th{background:#f3e4e8;color:var(--primary);font-weight:bold}
+.collection-print .check-cell{text-align:center;width:70px}
+.collection-print .check-box{display:inline-grid;place-items:center;width:18px;height:18px;border:2px solid var(--primary);border-radius:4px;background:#fff}
+.collection-print .amount{text-align:center;font-weight:bold}
+.collection-print .sign{width:105px}
+.collection-print .print-foot{margin-top:12px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:#66575c}
+.collection-print .gold-line{height:3px;background:linear-gradient(90deg,var(--primary),var(--primary2),var(--primary));margin-top:12px;border-radius:10px}
+
+@media print{
+  @page{size:A4 portrait;margin:10mm}
+  body{background:#fff!important}
+  body *{visibility:hidden!important}
+  .collection-print,.collection-print *{visibility:visible!important}
+  .collection-print{display:block!important;position:absolute!important;inset:0!important;width:100%!important;padding:0!important;margin:0!important;background:#fff!important;color:#151a2d!important;font-family:Tahoma,Arial,sans-serif}
+  .collection-print .print-head{break-inside:avoid}
+  .collection-print table{page-break-inside:auto}
+  .collection-print tr{page-break-inside:avoid;page-break-after:auto}
+  .collection-print .print-head h1{font-size:23px}
+}
+
 /* Mobile application shell */
 .mobile-topbar,.mobile-nav{display:none}
 
@@ -515,9 +565,10 @@ aside{background:linear-gradient(180deg,#3a0c1c 0%,#511126 100%)}
 </section>
 
 <section id="reports" class="page hidden"><div class="mobile-page-title"><h1>التقارير</h1><p>ملخص السداد حسب الشهر</p></div>
- <div class="top"><div><h1>التقارير</h1><p>ملخص شامل للجمعية حسب العضو والشهر.</p></div><button class="btn secondary" onclick="window.print()">🖨 طباعة</button></div>
+ <div class="top"><div><h1>التقارير</h1><p>ملخص شامل للجمعية حسب العضو والشهر.</p></div><button class="btn secondary" onclick="printCollectionSheet()">🖨 كشف تحصيل A4</button></div>
  <div class="card"><div class="section-head"><h2>تقرير الأعضاء</h2><select id="reportMonth" onchange="renderReports()" class="monthbar"></select></div>
  <div class="table-wrap"><table><thead><tr><th>العضو</th><th>المطلوب</th><th>المدفوع</th><th>المتبقي</th><th>نسبة السداد</th></tr></thead><tbody id="reportsBody"></tbody></table></div></div>
+ <div id="collectionPrint" class="collection-print" aria-hidden="true"></div>
 </section>
 
 <section id="settings" class="page hidden"><div class="mobile-page-title"><h1>الإعدادات</h1><p>بيانات الجمعية والنسخ الاحتياطية</p></div>
@@ -846,7 +897,25 @@ function renderOrders(){
   if($('orderAdminCurrent')) $('orderAdminCurrent').textContent=current?`الدور الحالي: ${current.name} — رقم ${currentIndex+1}`:'تم إكمال جميع الأدوار ✓';
   if($('orderAdminNext')) $('orderAdminNext').textContent=next?`الدور القادم: ${next.name} — رقم ${currentIndex+2}`:'لا يوجد دور تالٍ';
 }
-function renderReports(){let k=$('reportMonth').value;$('reportsBody').innerHTML=data.members.map(m=>{let p=getPay(m,k),r=Math.min(100,p.amount/m.amount*100||0);return `<tr><td><b>${m.name}</b></td><td>${money(m.amount)}</td><td>${money(p.amount)}</td><td>${money(Math.max(0,m.amount-p.amount))}</td><td>${r.toFixed(0)}%</td></tr>`}).join('')||'<tr><td colspan="5" class="empty">لا توجد بيانات.</td></tr>'}
+function renderReports(){
+  let k=$('reportMonth').value;
+  $('reportsBody').innerHTML=data.members.map(m=>{let p=getPay(m,k),r=Math.min(100,p.amount/m.amount*100||0);return `<tr><td><b>${m.name}</b></td><td>${money(m.amount)}</td><td>${money(p.amount)}</td><td>${money(Math.max(0,m.amount-p.amount))}</td><td>${r.toFixed(0)}%</td></tr>`}).join('')||'<tr><td colspan="5" class="empty">لا توجد بيانات.</td></tr>';
+  renderCollectionPrint(k);
+}
+function renderCollectionPrint(k){
+  let label=monthLabel(k), name=data.settings.name||'جمعيتي';
+  let rows=data.members.map((m,i)=>{
+    let p=getPay(m,k), paid=status(m,k)==='paid';
+    return `<tr><td>${i+1}</td><td><b>${m.name}</b></td><td class="amount">${money(m.amount)}</td><td class="check-cell"><span class="check-box"></span></td><td class="sign"></td></tr>`;
+  }).join('');
+  if(!rows) rows='<tr><td colspan="5" style="text-align:center">لا يوجد أعضاء مسجلون.</td></tr>';
+  $('collectionPrint').innerHTML=`<div class="print-head"><h1>${name}</h1><div class="sub">كشف تحصيل الاشتراكات الشهرية</div></div><div class="print-meta"><div class="meta-box"><b>الشهر:</b> ${label}</div><div class="meta-box"><b>عدد الأعضاء:</b> ${data.members.length}</div><div class="meta-box"><b>إجمالي المطلوب:</b> ${money(data.members.reduce((s,m)=>s+Number(m.amount),0))}</div></div><table><thead><tr><th style="width:38px">م</th><th>اسم العضو</th><th style="width:95px">المبلغ</th><th class="check-cell">تم الدفع ✓</th><th class="sign">توقيع / ملاحظة</th></tr></thead><tbody>${rows}</tbody></table><div class="gold-line"></div><div class="print-foot"><span>تاريخ الطباعة: ${new Date().toLocaleDateString('ar-EG')}</span><span>إجمالي الأعضاء: ${data.members.length}</span><span>مسؤول التحصيل: __________________</span></div>`;
+}
+function printCollectionSheet(){
+  let k=$('reportMonth').value;
+  renderCollectionPrint(k);
+  window.print();
+}
 function updateDurationPreview(){
   let a=$('startMonth')?.value,b=$('endMonth')?.value;
   let n=monthsBetween(a,b).length;
