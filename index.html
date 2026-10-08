@@ -7,9 +7,9 @@
 <style>
 :root{
  --bg:#f5f7fb;--card:#fff;--ink:#151a2d;--muted:#7b8498;
- --primary:#5b4bdb;--primary2:#7b6cf0;--green:#16a36a;--red:#e14b5a;
- --orange:#e49a26;--line:#e8eaf1;--shadow:0 8px 26px rgba(28,35,60,.07);
- --nav:#15172a
+ --primary:#7b1734;--primary2:#b8872b;--green:#16845d;--red:#c83d4d;
+ --orange:#b8872b;--line:#eadfe2;--shadow:0 10px 30px rgba(71,18,39,.08);
+ --nav:#3b0d1d
 }
 *{box-sizing:border-box}
 html{background:var(--bg);-webkit-text-size-adjust:100%}
@@ -23,29 +23,29 @@ aside{
 }
 .brand{display:flex;gap:12px;align-items:center;padding:7px 9px 24px}
 .logo{
- width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#8a7cf2,#5142c9);
- display:grid;place-items:center;font-size:22px;font-weight:bold;box-shadow:0 8px 20px rgba(91,75,219,.3)
+ width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#b8872b,#7b1734);
+ display:grid;place-items:center;font-size:22px;font-weight:bold;box-shadow:0 8px 20px rgba(123,23,52,.28)
 }
 .brand b{font-size:19px}.brand small{display:block;color:#aeb3c8;margin-top:4px}
 nav button{
  width:100%;background:transparent;color:#bfc3d4;text-align:right;padding:13px 14px;
  border-radius:13px;margin:3px 0;transition:.18s
 }
-.nav-active,nav button:hover{background:#292b48!important;color:#fff!important}
+.nav-active,nav button:hover{background:#5a1b31!important;color:#fff!important}
 .nav-icon{display:inline-block;width:27px}
 main{width:calc(100% - 255px);margin-right:255px;padding:28px;max-width:1500px}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .top h1{margin:0;font-size:28px;letter-spacing:-.4px}.top p{margin:6px 0 0;color:var(--muted);font-size:13px}
 .btn{
  padding:11px 17px;border-radius:12px;background:var(--primary);color:#fff;font-weight:bold;
- box-shadow:0 5px 13px rgba(91,75,219,.16);transition:transform .12s,box-shadow .12s
+ box-shadow:0 5px 13px rgba(123,23,52,.16);transition:transform .12s,box-shadow .12s
 }
 .btn:active{transform:scale(.97)}.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}
 .btn.green{background:var(--green)}.btn.red{background:var(--red)}.btn.small{padding:8px 11px;font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:20px;box-shadow:var(--shadow)}
 .stat{position:relative;overflow:hidden}.stat .ico{
- width:43px;height:43px;border-radius:14px;background:#eeecff;color:var(--primary);
+ width:43px;height:43px;border-radius:14px;background:#f6e9ed;color:var(--primary);
  display:grid;place-items:center;font-size:20px;margin-bottom:13px
 }
 .stat h2{margin:0;font-size:25px}.stat p{margin:6px 0 0;color:var(--muted);font-size:13px}
@@ -53,7 +53,7 @@ main{width:calc(100% - 255px);margin-right:255px;padding:28px;max-width:1500px}
 .section-head h2{margin:0;font-size:18px}.toolbar{display:flex;gap:9px;flex-wrap:wrap}
 .field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}.field label{font-size:13px;color:#5d6679}
 .field input,.field select{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;outline:none;min-height:44px}
-.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(91,75,219,.08)}
+.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(123,23,52,.08)}
 table{width:100%;border-collapse:collapse}
 th,td{padding:13px 10px;border-bottom:1px solid var(--line);text-align:right;font-size:14px}
 th{color:#687187;background:#fafaff;font-size:12px}.status{display:inline-flex;padding:5px 9px;border-radius:20px;font-size:12px;font-weight:bold}
@@ -61,7 +61,7 @@ th{color:#687187;background:#fafaff;font-size:12px}.status{display:inline-flex;p
 .muted{color:var(--muted)}.progress{height:8px;background:#eceef5;border-radius:20px;overflow:hidden}
 .progress i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:20px}
 .hidden{display:none!important}.empty{text-align:center;padding:45px;color:var(--muted)}
-.pill{background:#f0efff;color:var(--primary);padding:6px 9px;border-radius:20px;font-size:12px;display:inline-block;margin:2px}
+.pill{background:#f6e9ed;color:var(--primary);padding:6px 9px;border-radius:20px;font-size:12px;display:inline-block;margin:2px}
 .modal{position:fixed;inset:0;background:rgba(15,17,31,.54);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}
 .modal.show{display:flex}.modal-box{width:min(560px,100%);background:#fff;border-radius:22px;padding:23px;max-height:90vh;overflow:auto}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close{background:#f1f2f6;border-radius:10px;padding:8px 11px}
@@ -91,12 +91,12 @@ th{color:#687187;background:#fafaff;font-size:12px}.status{display:inline-flex;p
    align-items:center;justify-content:space-between
  }
  .mobile-brand{display:flex;align-items:center;gap:9px}.mobile-brand .mini-logo{
-   width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,#8a7cf2,#5142c9);
+   width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,#b8872b,#7b1734);
    color:#fff;display:grid;place-items:center;font-weight:bold;font-size:19px
  }
  .mobile-brand b{font-size:16px}.mobile-brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
  .mobile-action{
-   width:40px;height:40px;border-radius:13px;background:#f0efff;color:var(--primary);font-size:18px
+   width:40px;height:40px;border-radius:13px;background:#f6e9ed;color:var(--primary);font-size:18px
  }
  .top{display:none}
  .page{padding-top:0}
@@ -145,7 +145,7 @@ th{color:#687187;background:#fafaff;font-size:12px}.status{display:inline-flex;p
    flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px
  }
  .mobile-nav button b{font-size:19px;line-height:20px;font-weight:normal}
- .mobile-nav button.active{background:#f0efff;color:var(--primary);font-weight:bold}
+ .mobile-nav button.active{background:#f6e9ed;color:var(--primary);font-weight:bold}
  .mobile-nav .add{
    color:#fff;background:linear-gradient(135deg,#6d5be7,#5040c6);margin:1px 3px;
    border-radius:16px;box-shadow:0 5px 14px rgba(91,75,219,.25)
@@ -194,7 +194,7 @@ th{color:#687187;background:#fafaff;font-size:12px}.status{display:inline-flex;p
 .quick-action b{display:block;font-size:20px;margin-bottom:5px;color:var(--primary)}
 .quick-action span{font-size:10px;color:var(--muted)}
 .settings-card-title{display:flex;align-items:center;gap:10px;margin-bottom:15px}
-.settings-icon{width:40px;height:40px;border-radius:13px;background:#f0efff;color:var(--primary);display:grid;place-items:center;font-size:19px}
+.settings-icon{width:40px;height:40px;border-radius:13px;background:#f6e9ed;color:var(--primary);display:grid;place-items:center;font-size:19px}
 .duration-box{
   display:grid;grid-template-columns:1fr 1fr;gap:9px;background:#f8f8fc;
   border:1px solid var(--line);border-radius:15px;padding:11px;margin:5px 0 13px
@@ -229,7 +229,7 @@ right:-75px;top:-75px;background:rgba(255,255,255,.08)}
   box-shadow:0 4px 13px rgba(28,35,60,.045)
 }
 .member-pay-left{display:flex;align-items:center;gap:10px;min-width:0}
-.avatar{width:38px;height:38px;border-radius:13px;background:#f0efff;color:var(--primary);
+.avatar{width:38px;height:38px;border-radius:13px;background:#f6e9ed;color:var(--primary);
 display:grid;place-items:center;font-weight:bold;flex:0 0 auto}
 .member-pay-name{font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .member-pay-sub{font-size:10px;color:var(--muted);margin-top:3px}
@@ -237,13 +237,13 @@ display:grid;place-items:center;font-weight:bold;flex:0 0 auto}
 .order-filter{display:flex;gap:7px;overflow:auto;padding-bottom:2px}
 .order-filter button{white-space:nowrap;background:#fff;border:1px solid var(--line);color:var(--muted);
 border-radius:12px;padding:9px 12px;font-size:11px}
-.order-filter button.active{background:#f0efff;color:var(--primary);border-color:#dedaff;font-weight:bold}
+.order-filter button.active{background:#f6e9ed;color:var(--primary);border-color:#dedaff;font-weight:bold}
 .mobile-settings-link{
   display:flex!important;align-items:center;justify-content:space-between;background:#fff;
   border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px;color:var(--ink)
 }
 .mobile-settings-link .left{display:flex;align-items:center;gap:10px}
-.mobile-settings-link .si{width:38px;height:38px;border-radius:12px;background:#f0efff;color:var(--primary);display:grid;place-items:center}
+.mobile-settings-link .si{width:38px;height:38px;border-radius:12px;background:#f6e9ed;color:var(--primary);display:grid;place-items:center}
 @media(min-width:681px){.mobile-settings-link{display:none!important}}
 @media(max-width:680px){
   .order-stats{gap:6px}.order-stat{padding:8px}.order-stat b{font-size:14px}
@@ -363,6 +363,20 @@ main{width:calc(100% - 270px);margin-right:270px;padding:32px;max-width:1600px}.
 .firebase-auth-box h2{margin:0 0 7px}.firebase-auth-box p{margin:0 0 18px;color:var(--muted);font-size:12px;line-height:1.8}
 .firebase-auth-box .field{margin-bottom:11px}.firebase-auth-status{margin-top:11px;padding:10px 12px;border-radius:12px;font-size:11px;background:#f5f7f8;color:var(--muted)}
 .cloud-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:20px;background:#e8f7f2;color:#087a54;font-size:10px;font-weight:800;margin-inline-start:7px}.cloud-badge.off{background:#fff3df;color:#9a650d}.cloud-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+</style><style id="burgundy-gold-final-theme">
+:root{--bg:#fbf7f8;--card:#fff;--ink:#24151b;--muted:#7d6870;--primary:#7b1734;--primary2:#c29a45;--gold:#c29a45;--green:#16845d;--red:#c83d4d;--orange:#b8872b;--line:#eadfe2;--shadow:0 12px 32px rgba(71,18,39,.08);--nav:#3a0c1c}
+body{background:linear-gradient(180deg,#fbf7f8 0%,#f7eef1 100%);color:var(--ink)}
+aside{background:linear-gradient(180deg,#3a0c1c 0%,#511126 100%)}
+.logo,.mobile-brand .mini-logo{background:linear-gradient(135deg,#d0aa58,#7b1734)!important;box-shadow:0 10px 24px rgba(123,23,52,.25)}
+.nav-active,nav button:hover{background:rgba(194,154,69,.16)!important;color:#fff!important}
+.btn{background:linear-gradient(135deg,#7b1734,#9b2b4d)!important;box-shadow:0 8px 20px rgba(123,23,52,.18)}
+.btn.green{background:linear-gradient(135deg,#16845d,#0d6f4e)!important}.btn.red{background:linear-gradient(135deg,#c83d4d,#a92f3e)!important}
+.btn.secondary{background:#fff!important;color:var(--ink)!important;border-color:var(--line)!important;box-shadow:none!important}
+.card,.modal-box{border-color:var(--line);box-shadow:var(--shadow)}
+.stat .ico,.settings-icon,.mobile-action,.mobile-nav button.active,.pill,.order-filter button.active{background:#f6e9ed!important;color:var(--primary)!important}
+.field input:focus,.field select:focus{border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(123,23,52,.10)!important}
+.progress i{background:linear-gradient(90deg,#7b1734,#c29a45)!important}
+.monthbar select{color:var(--ink)}
 </style>
 <script src="firebase-config.js"></script>
 </head>
@@ -567,6 +581,7 @@ const DB_STORE='app';
 const DB_KEY='mainData';
 const CLOUD_PATH='jam3ety';
 const EMPTY_DATA={settings:{name:'جمعيتي',months:12,startMonth:'',endMonth:''},members:[],payments:{},receipts:{}};
+let localSettingsConfigured=false;
 let data=loadLocalData()||structuredClone(EMPTY_DATA);
 let storageReady=false;
 let firebaseReady=false;
@@ -592,9 +607,17 @@ function normalizeData(x){
 function loadLocalData(){
   try{
     const raw=localStorage.getItem(KEY);
-    if(raw)return normalizeData(JSON.parse(raw));
+    if(raw){
+      const parsed=JSON.parse(raw);
+      localSettingsConfigured=!!(parsed?.settings?.startMonth&&parsed?.settings?.endMonth);
+      return normalizeData(parsed);
+    }
     const old=localStorage.getItem('jam3ety_v1');
-    if(old)return normalizeData(JSON.parse(old));
+    if(old){
+      const parsed=JSON.parse(old);
+      localSettingsConfigured=!!(parsed?.settings?.startMonth&&parsed?.settings?.endMonth);
+      return normalizeData(parsed);
+    }
   }catch(e){}
   return null;
 }
@@ -657,9 +680,15 @@ async function startCloudSync(){
     const cloud=snap.val();
     if(cloud && typeof cloud==='object'){
       applyingCloud=true;
+      const localSettings=(localSettingsConfigured&&data?.settings?.startMonth&&data?.settings?.endMonth)?{...data.settings}:null;
       data=normalizeData(cloud);
+      if(localSettings){
+        data.settings={...data.settings,...localSettings};
+        data.settings.months=monthsBetween(data.settings.startMonth,data.settings.endMonth).length||data.settings.months;
+      }
       writeLocal(data);await writeBackup(data);
       applyingCloud=false;cloudBootstrapped=true;storageReady=true;renderAll();
+      if(localSettings && JSON.stringify(cloud.settings)!==JSON.stringify(data.settings)) await pushCloud(data);
     }else if(!cloudBootstrapped){
       cloudBootstrapped=true;
       await pushCloud(data);
@@ -688,7 +717,17 @@ function save(){
   if(document.readyState!=='loading'&&typeof renderAll==='function')renderAll();return true;
 }
 async function initializeStorage(){
-  const backup=await readBackup();if(backup&&backup.members.length>=data.members.length)data=backup;
+  // Preserve the month range explicitly saved in the current browser before
+  // restoring the older IndexedDB backup. The backup may contain older months.
+  const preferredSettings=(localSettingsConfigured&&data?.settings?.startMonth&&data?.settings?.endMonth)
+    ? {...data.settings}:null;
+  const backup=await readBackup();
+  if(backup&&backup.members.length>=data.members.length)data=backup;
+  if(preferredSettings){
+    data.settings={...data.settings,...preferredSettings};
+    data.settings.months=monthsBetween(data.settings.startMonth,data.settings.endMonth).length||data.settings.months;
+    localSettingsConfigured=true;
+  }
   data=normalizeData(data);writeLocal(data);await writeBackup(data);storageReady=true;renderAll();
   await initFirebase();
 }
@@ -709,16 +748,20 @@ function monthsBetween(a,b){
   return arr;
 }
 function monthsList(){
-  let arr=monthsBetween(data.settings.startMonth,data.settings.endMonth);
+  const arr=monthsBetween(data.settings.startMonth,data.settings.endMonth);
   if(arr.length)return arr;
-  let now=new Date(),count=Math.max(1,Number(data.settings.months)||12);
-  for(let i=0;i<count;i++){let d=new Date(now.getFullYear(),now.getMonth()+i,1);arr.push(d.toISOString().slice(0,7))}
-  return arr;
+  // Legacy data only: use the saved month count from the configured start month.
+  const start=data.settings.startMonth;
+  const count=Math.max(1,Number(data.settings.months)||12);
+  if(!start)return [];
+  const out=[];let d=new Date(start+'-01T00:00:00');
+  for(let i=0;i<count;i++){out.push(d.toISOString().slice(0,7));d.setMonth(d.getMonth()+1)}
+  return out;
 }
 function durationCount(){return monthsList().length}
 function fillMonths(){
   let list=monthsList();
-  ['dashMonth','payMonth','reportMonth'].forEach(id=>{
+  ['dashMonth','payMonth','reportMonth','orderMonthMobile','orderMonthDesktop'].forEach(id=>{
     let el=$(id);if(!el)return;
     let old=el.value;
     el.innerHTML=list.map(k=>`<option value="${k}">${monthLabel(k)}</option>`).join('');
@@ -815,7 +858,7 @@ function syncEndFromCount(){
   let d=new Date(a+'-01T00:00:00');d.setMonth(d.getMonth()+c-1);
   $('endMonth').value=d.toISOString().slice(0,7);updateDurationPreview();
 }
-async function saveSettings(){let name=$('groupName').value.trim()||'جمعيتي',a=$('startMonth').value,b=$('endMonth').value;if(!a||!b)return toast('حدد شهر البداية والنهاية','error');if(monthsBetween(a,b).length===0)return toast('شهر النهاية يجب أن يكون بعد البداية أو مساويًا لها','error');let btn=document.querySelector('#settings .btn:not(.secondary):not(.red)');setBusy(btn,true,'جارٍ الحفظ...');await new Promise(r=>setTimeout(r,400));data.settings.name=name;data.settings.startMonth=a;data.settings.endMonth=b;data.settings.months=monthsBetween(a,b).length;save();fillMonths();renderAll();setBusy(btn,false);toast(`تم حفظ إعدادات الجمعية ✓ — ${data.settings.months} شهر`)}
+async function saveSettings(){let name=$('groupName').value.trim()||'جمعيتي',a=$('startMonth').value,b=$('endMonth').value;if(!a||!b)return toast('حدد شهر البداية والنهاية','error');if(monthsBetween(a,b).length===0)return toast('شهر النهاية يجب أن يكون بعد البداية أو مساويًا لها','error');let btn=document.querySelector('#settings .btn:not(.secondary):not(.red)');setBusy(btn,true,'جارٍ الحفظ...');await new Promise(r=>setTimeout(r,400));data.settings.name=name;data.settings.startMonth=a;data.settings.endMonth=b;data.settings.months=monthsBetween(a,b).length;localSettingsConfigured=true;save();fillMonths();renderAll();setBusy(btn,false);toast(`تم حفظ إعدادات الجمعية ✓ — ${data.settings.months} شهر`)}
 function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='جمعيتي-نسخة-احتياطية.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('تم تجهيز النسخة الاحتياطية ✓')}
 function importData(){$('importFile').click()}
 function doImport(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let incoming=JSON.parse(r.result);if(!incoming||!incoming.settings||!Array.isArray(incoming.members))throw 0;data=incoming;if(!data.payments)data.payments={};if(!data.receipts)data.receipts={};save();fillMonths();renderAll();toast('تم استيراد البيانات بنجاح ✓')}catch{toast('ملف غير صالح — لم يتم تغيير البيانات','error')}finally{e.target.value=''}};r.readAsText(f)}
@@ -828,9 +871,8 @@ function setOrderFilter(filter,btn){
   if(btn)btn.classList.add('active');
   renderOrdersMobile();
 }
-function initials(name){
-  let s=(name||'عضو').trim().split(/\s+/);
-  return (s[0]?.[0]||'ع')+(s[1]?.[0]||'');
+function initials(name,order){
+  return String(Number(order)||1);
 }
 function renderOrdersMobile(){
   let list=monthsList();
@@ -892,7 +934,7 @@ function renderOrdersMobile(){
   }).map(m=>{
     let p=getPay(m,month),target=Number(m.amount)||0,got=Number(p.amount)||0,isPaid=got>=target;
     let remaining=Math.max(0,target-got),isCurrent=receiver?.id===m.id;
-    return `<div class="member-pay-card ${isCurrent?'is-current':''}"><div class="member-pay-left"><div class="avatar">${initials(m.name)}</div><div style="min-width:0"><div class="member-pay-name">${m.name}${isCurrent?' • مستحق الدور':''}</div><div class="member-pay-sub">${isPaid?'تم الدفع بالكامل':remaining>0?'متبقي '+money(remaining):'لم يتم الدفع'} • المطلوب ${money(target)}</div></div></div><span class="status ${isPaid?'paid':'unpaid'}">${isPaid?'دفع':'لم يدفع'}</span></div>`;
+    return `<div class="member-pay-card ${isCurrent?'is-current':''}"><div class="member-pay-left"><div class="avatar">${initials(m.name,m.order)}</div><div style="min-width:0"><div class="member-pay-name">${m.name}${isCurrent?' • مستحق الدور':''}</div><div class="member-pay-sub">${isPaid?'تم الدفع بالكامل':remaining>0?'متبقي '+money(remaining):'لم يتم الدفع'} • المطلوب ${money(target)}</div></div></div><span class="status ${isPaid?'paid':'unpaid'}">${isPaid?'دفع':'لم يدفع'}</span></div>`;
   }).join('');
   if($('orderMembersMobile'))$('orderMembersMobile').innerHTML=filtered||'<div class="empty card">لا توجد بيانات في هذا التصنيف.</div>';
 }
